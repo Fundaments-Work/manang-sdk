@@ -1,0 +1,30 @@
+name: CI
+
+# Minutes are a budget: this runs one shell script, and only when the interface
+# or the examples change. There are no Rust builds in CI yet.
+on:
+  pull_request:
+    paths:
+      - "wit/**"
+      - "examples/**"
+      - "scripts/check-wit-copies.sh"
+      - ".github/workflows/ci.yml"
+  push:
+    branches: [main]
+    paths:
+      - "wit/**"
+      - "examples/**"
+      - "scripts/check-wit-copies.sh"
+      - ".github/workflows/ci.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  wit-copies:
+    name: WIT copies match
+    runs-on: ubuntu-24.04
+    timeout-minutes: 3
+    steps:
+      - uses: actions/checkout@v7
+      - run: scripts/check-wit-copies.sh
